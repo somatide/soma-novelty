@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOMA NOVELTY｜よくある質問</title>
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:"Noto Sans JP","Yu Gothic",Meiryo,sans-serif;color:#14213d;background:#fff}
+a{text-decoration:none;color:inherit}
+img{display:block;max-width:100%}
+
+.header{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.96);backdrop-filter:blur(12px);border-bottom:1px solid #edf0f4}
+.header-inner{width:min(1120px,94%);min-height:78px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:8px}
+.brand-logo{width:65px;height:58px;object-fit:contain}
+.brand-text{font-size:20px;font-weight:1000;letter-spacing:.06em}
+.brand-text small{display:block;font-size:8px;letter-spacing:.2em;color:#697386;margin-top:3px}
+.back{font-size:12px;font-weight:900;padding:11px 18px;border-radius:999px;border:1.5px solid #14213d;transition:.2s}
+.back:hover{background:#14213d;color:#fff}
+
+.hero{background:linear-gradient(120deg,#fff4cf,#e5fbff 42%,#fff0f8 75%,#eee8ff);padding:58px 0 55px;text-align:center;position:relative;overflow:hidden}
+.hero:before{content:"";position:absolute;left:-90px;top:-110px;width:260px;height:260px;border-radius:50%;background:rgba(255,142,194,.18)}
+.hero:after{content:"";position:absolute;right:-80px;bottom:-130px;width:280px;height:280px;border-radius:50%;background:rgba(77,210,177,.16)}
+.hero-inner{width:min(900px,92%);margin:auto;position:relative;z-index:2}
+.en{font-size:10px;letter-spacing:.3em;font-weight:1000;color:#18b98a}
+h1{font-size:clamp(32px,5vw,48px);margin:8px 0 12px;font-weight:1000}
+.hero p{margin:0;color:#687386;font-size:12px;font-weight:700}
+
+.faq-section{padding:55px 0 70px}
+.container{width:min(900px,92%);margin:auto}
+.category{margin:0 0 34px}
+.category-title{display:flex;align-items:center;gap:10px;margin:0 0 14px;font-size:20px;font-weight:1000}
+.category-title:before{content:"";width:7px;height:26px;border-radius:999px;background:linear-gradient(#ff55a7,#ff9a39)}
+.qa{border:1px solid #e8edf3;border-radius:18px;background:#fff;margin-bottom:11px;overflow:hidden;box-shadow:0 5px 15px rgba(20,33,61,.045)}
+.qa summary{cursor:pointer;list-style:none;padding:18px 50px 18px 21px;font-size:14px;font-weight:900;position:relative}
+.qa summary::-webkit-details-marker{display:none}
+.qa summary:after{content:"＋";position:absolute;right:19px;top:14px;font-size:22px;color:#ff69a8;font-weight:500}
+.qa[open] summary:after{content:"−"}
+.answer{padding:0 21px 19px;color:#687386;font-size:12px;line-height:1.9;font-weight:700}
+.answer p{margin:0}
+
+.contact-box{margin-top:45px;border-radius:28px;padding:30px;text-align:center;background:linear-gradient(135deg,#fff4cf,#e8fbff 50%,#fff0f8);box-shadow:0 10px 30px rgba(20,33,61,.07)}
+.contact-box h2{margin:0 0 8px;font-size:23px;font-weight:1000}
+.contact-box p{margin:0 0 17px;color:#687386;font-size:11px;line-height:1.8;font-weight:700}
+.contact-btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 25px;border-radius:999px;color:#fff;background:linear-gradient(90deg,#ff36a2,#ff9237);font-size:13px;font-weight:1000;box-shadow:0 10px 20px rgba(247,53,164,.18)}
+
+footer{margin-top:10px;padding:22px 0;text-align:center;background:#f7f9fc;color:#8a95a5;font-size:9px;font-weight:700}
+@media(max-width:620px){
+ .header-inner{min-height:68px}.brand-logo{width:52px;height:48px}.brand-text{font-size:16px}.back{font-size:10px;padding:9px 13px}
+ .hero{padding:45px 0}.faq-section{padding:40px 0 55px}
+ .qa summary{font-size:13px;padding:16px 45px 16px 17px}.answer{font-size:11px;padding:0 17px 17px}
+ .category-title{font-size:18px}.contact-box{padding:25px 18px}
+}
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="header-inner">
+    <a class="brand" href="./Untitled-1.html">
+      <img class="brand-logo" src="./logo.png" alt="SOMA NOVELTY">
+      <span class="brand-text">SOMA NOVELTY<small>ORIGINAL GOODS STORE</small></span>
+    </a>
+    <a class="back" href="./Untitled-1.html">← ホームへ戻る</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="en">FAQ</div>
+    <h1>よくある質問</h1>
+    <p>デザインやご注文について、よくいただくご質問をまとめました。</p>
+  </div>
+</section>
+
+<section class="faq-section">
+<div class="container">
+
+  <div class="category">
+    <h2 class="category-title">デザインについて</h2>
+
+    <details class="qa" open>
+      <summary>どのようにオリジナルグッズをデザインできますか？</summary>
+      <div class="answer"><p>商品を選んでシミュレーターを開き、画像をアップロードしてデザインします。画像の配置・サイズ・角度などを調整できます。</p></div>
+    </details>
+
+    <details class="qa">
+      <summary>どんな画像をアップロードできますか？</summary>
+      <div class="answer"><p>シミュレーターからお手持ちの画像をアップロードしてご利用いただけます。印刷に適した画像についてご不明な場合は、お気軽にお問い合わせください。</p></div>
+    </details>
+
+    <details class="qa">
+      <summary>デザインの位置や大きさを変更できますか？</summary>
+      <div class="answer"><p>はい。シミュレーター上で画像を好きな場所へ移動したり、サイズや角度を調整したりできます。</p></div>
+    </details>
+  </div>
+
+  <div class="category">
+    <h2 class="category-title">商品・ご注文について</h2>
+
+    <details class="qa">
+      <summary>どんな商品を作れますか？</summary>
+      <div class="answer"><p>現在は、トートバッグ・Tシャツ・ポーチ・ボトル・フォトフレーム・木製スマホスタンドをご用意しています。</p></div>
+    </details>
+
+    <details class="qa">
+      <summary>デザインした商品はどのように注文しますか？</summary>
+      <div class="answer"><p>シミュレーターでデザインを完成させたあと、注文画面から内容をご確認いただけます。ご不明な点がある場合は、お問い合わせください。</p></div>
+    </details>
+
+    <details class="qa">
+      <summary>注文前にデザインを確認できますか？</summary>
+      <div class="answer"><p>はい。シミュレーター上で商品とデザインの仕上がりイメージを確認しながら調整できます。</p></div>
+    </details>
+  </div>
+
+  <div class="category">
+    <h2 class="category-title">印刷について</h2>
+
+    <details class="qa">
+      <summary>印刷する場所は指定できますか？</summary>
+      <div class="answer"><p>商品ごとに設定された印刷範囲の中で、画像を配置してデザインできます。</p></div>
+    </details>
+
+    <details class="qa">
+      <summary>画像の色や仕上がりについて相談できますか？</summary>
+      <div class="answer"><p>はい。印刷する素材や画像によって仕上がりが変わる場合があります。気になる点がございましたら、注文前にお気軽にご相談ください。</p></div>
+    </details>
+  </div>
+
+  <div class="category">
+    <h2 class="category-title">法人のお客様</h2>
+
+    <details class="qa">
+      <summary>法人での注文・ノベルティ制作もできますか？</summary>
+      <div class="answer"><p>はい。企業ノベルティ・イベント・記念品などのオリジナルグッズ制作についてもご相談いただけます。</p></div>
+    </details>
+
+    <details class="qa">
+      <summary>まとまった数量での注文について相談できますか？</summary>
+      <div class="answer"><p>はい。ご希望の商品や数量などをお知らせいただければ、内容を確認してご案内します。</p></div>
+    </details>
+  </div>
+
+  <div class="contact-box">
+    <h2>解決しない場合はお気軽にご相談ください</h2>
+    <p>「こんなグッズを作りたい！」など、ちょっとしたご相談でも大丈夫です。</p>
+    <a class="contact-btn" href="mailto:somatide.fujino19@gmail.com">✉ お問い合わせする</a>
+  </div>
+
+</div>
+</section>
+
+<footer>© SOMATIDE Inc. All Rights Reserved.</footer>
+</body>
+</html>

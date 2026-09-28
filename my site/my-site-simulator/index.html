@@ -1,0 +1,2536 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>オリジナルプリントシミュレーター | SOMA NOVELTY</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Hiragino Kaku Gothic ProN",
+        "Yu Gothic",
+        Meiryo,
+        sans-serif;
+    background:#f5f5f7;
+    color:#222;
+}
+
+.container{
+    width:95%;
+    max-width:1200px;
+    margin:25px auto 60px;
+}
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:18px;
+}
+
+.home-button{
+    display:inline-block;
+    padding:10px 16px;
+    border-radius:8px;
+    background:#222;
+    color:#fff;
+    text-decoration:none;
+    font-size:14px;
+}
+
+.brand-home{
+    display:inline-block;
+    color:#111;
+    text-decoration:none;
+    font-weight:700;
+    font-size:16px;
+}
+
+.brand-home:hover{
+    opacity:.65;
+}
+
+h1{
+    text-align:center;
+    margin:8px 0;
+}
+
+.subtitle{
+    text-align:center;
+    color:#666;
+    margin-bottom:25px;
+}
+
+/* =========================
+   シミュレーター
+========================= */
+
+.simulator{
+    display:flex;
+    gap:25px;
+    background:#fff;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.controls{
+    width:280px;
+    flex-shrink:0;
+}
+
+.controls h2{
+    margin-top:0;
+}
+
+.control-group{
+    margin-bottom:22px;
+}
+
+label{
+    display:block;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+select,
+input[type=file],
+input[type=text],
+input[type=email],
+input[type=tel],
+textarea,
+input[type=number]{
+    width:100%;
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:8px;
+    background:#fff;
+}
+
+input[type=range]{
+    width:100%;
+}
+
+.size-value,
+.rotate-value{
+    text-align:center;
+    margin-top:5px;
+    color:#666;
+}
+
+/* =========================
+   ボタン
+========================= */
+
+.reset-button,
+.delete-button,
+.purchase-button,
+.submit-button,
+.back-button{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+.reset-button{
+    background:#333;
+    color:#fff;
+}
+
+.delete-button{
+    background:#d9534f;
+    color:#fff;
+    margin-top:10px;
+}
+
+.purchase-button,
+.submit-button{
+    background:#111;
+    color:#fff;
+}
+
+.back-button{
+    background:#eee;
+    color:#222;
+    margin-top:10px;
+}
+
+.reset-button:hover,
+.delete-button:hover,
+.purchase-button:hover,
+.submit-button:hover{
+    opacity:.85;
+}
+
+/* =========================
+   使い方
+========================= */
+
+.help{
+    margin-top:22px;
+    padding:15px;
+    background:#f7f7f7;
+    border-radius:8px;
+    font-size:13px;
+    line-height:1.8;
+}
+
+/* =========================
+   プレビュー
+========================= */
+
+.preview{
+    flex:1;
+    min-width:0;
+}
+
+.product-stage{
+    position:relative;
+    width:100%;
+    height:620px;
+    background:#f3f7fb;
+    border-radius:12px;
+    overflow:hidden;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    touch-action:none;
+}
+
+.product-image{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+
+    user-select:none;
+    pointer-events:none;
+}
+
+/* =========================
+   印刷範囲
+========================= */
+
+.print-zone{
+    position:absolute;
+    border:2px dashed #c33;
+    pointer-events:none;
+    z-index:5;
+}
+
+.print-label{
+    position:absolute;
+    top:-25px;
+    left:0;
+
+    color:#c33;
+    font-size:12px;
+    font-weight:bold;
+
+    white-space:nowrap;
+}
+
+.zone-tote{
+    left:29.5%;
+    top:55%;
+    width:42%;
+    height:38%;
+}
+
+.zone-tshirt{
+    left:31.8%;
+    top:35%;
+    width:38%;
+    height:52%;
+}
+
+.zone-pouch{
+    left:26%;
+    top:43%;
+    width:50%;
+    height:28%;
+}
+
+.zone-bottle{
+    left:44.5%;
+    top:32%;
+    width:11%;
+    height:57%;
+}
+
+.zone-frame{
+    left:18%;
+    top:17%;
+    width:64%;
+    height:66%;
+    border:none;
+}
+
+.zone-stand{
+    left:32.8%;
+    top:18%;
+    width:34%;
+    height:53%;
+}
+
+/* =========================
+   フォトフレーム
+========================= */
+
+.frame-part{
+    position:absolute;
+    border:2px dashed #c33;
+    pointer-events:none;
+}
+
+.frame-top{
+    left:0;
+    top:0;
+    width:100%;
+    height:14%;
+    border-bottom:none;
+}
+
+.frame-bottom{
+    left:0;
+    bottom:0;
+    width:100%;
+    height:14%;
+    border-top:none;
+}
+
+.frame-left{
+    left:0;
+    top:14%;
+    width:14%;
+    height:72%;
+    border-right:none;
+}
+
+.frame-right{
+    right:0;
+    top:14%;
+    width:14%;
+    height:72%;
+    border-left:none;
+}
+
+.frame-note{
+    position:absolute;
+    top:-25px;
+    left:0;
+
+    color:#c33;
+    font-size:12px;
+    font-weight:bold;
+
+    white-space:nowrap;
+}
+
+/* =========================
+   複数画像
+========================= */
+
+.design-item{
+    position:absolute;
+
+    width:120px;
+    height:auto;
+
+    z-index:20;
+
+    cursor:grab;
+
+    user-select:none;
+    -webkit-user-select:none;
+
+    touch-action:none;
+
+    transform-origin:center center;
+
+    border:2px solid transparent;
+}
+
+.design-item.selected{
+    border:2px dashed #286b58;
+}
+
+.design-item.dragging{
+    cursor:grabbing;
+}
+
+/* =========================
+   選択中表示
+========================= */
+
+.selected-info{
+    margin-top:10px;
+    padding:10px;
+
+    background:#f4f7f4;
+
+    border-radius:8px;
+
+    font-size:13px;
+
+    text-align:center;
+}
+
+/* =========================
+   購入
+========================= */
+
+.purchase-area{
+    margin-top:18px;
+
+    background:#fff;
+
+    padding:22px;
+
+    border-radius:15px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.08);
+}
+
+.purchase-area h2{
+    margin-top:0;
+}
+
+.order-summary{
+    background:#f7f7f7;
+    border-radius:10px;
+
+    padding:15px;
+
+    line-height:1.9;
+
+    margin-bottom:18px;
+}
+
+.form-grid{
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:14px;
+}
+
+.full{
+    grid-column:1/-1;
+}
+
+.hidden{
+    display:none;
+}
+
+/* =========================
+   完了
+========================= */
+
+.complete{
+    padding:25px;
+
+    background:#fff;
+
+    border-radius:15px;
+
+    box-shadow:
+        0 4px 15px rgba(0,0,0,.08);
+
+    text-align:center;
+}
+
+.notice{
+    font-size:13px;
+    color:#666;
+    line-height:1.7;
+    margin-top:12px;
+}
+
+/* =========================
+   スマホ
+========================= */
+
+@media(max-width:800px){
+
+    .simulator{
+        flex-direction:column;
+    }
+
+    .controls{
+        width:100%;
+    }
+
+    .product-stage{
+        height:500px;
+    }
+
+    .form-grid{
+        grid-template-columns:1fr;
+    }
+
+    .full{
+        grid-column:auto;
+    }
+
+}
+
+
+/* ===== SOMA NOVELTY カラフルデザイン ===== */
+body{background:linear-gradient(135deg,#fff8df 0%,#eefaff 35%,#fff1f8 70%,#f1edff 100%) !important;}
+.topbar{background:linear-gradient(90deg,#fff,#fff8fc 50%,#f5f2ff) !important;border-bottom:1px solid #eadfff !important;box-shadow:0 4px 18px rgba(120,90,180,.08) !important;padding:10px 14px;border-radius:14px;}
+.brand-home{color:#7657d9 !important;font-weight:800 !important;}
+.brand-home:hover{color:#ff5ca8 !important;opacity:1 !important;}
+.home-button{background:linear-gradient(135deg,#8c7cf6,#5bc9f5) !important;color:#fff !important;border:none !important;box-shadow:0 6px 16px rgba(100,130,230,.2) !important;}
+.home-button:hover{transform:translateY(-2px);box-shadow:0 9px 20px rgba(100,130,230,.28) !important;}
+h1{color:#6d50c9 !important;}
+h1::after{content:"";display:block;width:80px;height:5px;margin:12px auto 0;border-radius:999px;background:linear-gradient(90deg,#ff72ad,#ffb35c,#6ed7f7,#9c83ff);}
+.simulator{background:rgba(255,255,255,.96) !important;border:1px solid #e7ddff !important;box-shadow:0 18px 45px rgba(108,77,170,.12),0 4px 12px rgba(80,150,200,.06) !important;}
+.controls{background:linear-gradient(180deg,#fffaff 0%,#f8fbff 100%) !important;border-radius:14px;padding:12px;}
+.controls h2{color:#6b50c8 !important;}
+.control-group{background:#fff !important;border:1px solid #e7eafa !important;border-radius:14px !important;padding:12px !important;box-shadow:0 4px 12px rgba(100,120,180,.05);}
+label{color:#414b68 !important;}
+select,input[type=file],input[type=text],input[type=email],input[type=tel],textarea,input[type=number]{background:#fff !important;border:1px solid #cfdaf0 !important;border-radius:10px !important;}
+select:focus,input[type=text]:focus,input[type=email]:focus,input[type=tel]:focus,textarea:focus,input[type=number]:focus{outline:none !important;border-color:#8d78ee !important;box-shadow:0 0 0 3px rgba(141,120,238,.12) !important;}
+input[type=range]{accent-color:#ff6da8 !important;}
+.reset-button{background:linear-gradient(135deg,#7c6cf3,#58c8f4) !important;color:#fff !important;border:none !important;box-shadow:0 5px 14px rgba(100,130,230,.18);}
+.delete-button{background:linear-gradient(135deg,#ff6d91,#ff9a7b) !important;color:#fff !important;border:none !important;}
+.purchase-button,.submit-button{background:linear-gradient(135deg,#ff55a4,#ff9b4a) !important;color:#fff !important;border:none !important;box-shadow:0 7px 18px rgba(255,100,160,.2) !important;}
+.purchase-button:hover,.submit-button:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(255,100,160,.28) !important;opacity:1 !important;}
+.back-button{background:#eef3ff !important;color:#6757c8 !important;border:1px solid #d8dffc !important;}
+.help{background:linear-gradient(135deg,#fff8e8,#eefaff) !important;border:1px solid #ffe0ad !important;color:#555 !important;}
+.product-stage{background:linear-gradient(135deg,#fffdf1 0%,#eafaff 45%,#fff0f8 100%) !important;border:1px solid #dce7f3 !important;}
+.selected-info{background:#eafff6 !important;border:1px solid #bcebd9 !important;color:#27785e !important;}
+.purchase-area{background:linear-gradient(180deg,#fff,#fff9fc) !important;border:1px solid #ffe0ed !important;box-shadow:0 10px 28px rgba(180,100,150,.08) !important;}
+.order-summary{background:linear-gradient(135deg,#fff7fb,#f6f3ff) !important;border:1px solid #ffd7e7 !important;}
+.complete{background:linear-gradient(135deg,#f2fffb,#fff5fa) !important;border:1px solid #d8eee7 !important;}
+button{transition:transform .2s ease,box-shadow .2s ease,opacity .2s ease;}
+::-webkit-scrollbar{width:9px;}
+::-webkit-scrollbar-track{background:#f4f2fa;}
+::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#a994f5,#ff8fbd);border-radius:999px;}
+::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#8d78ed,#ff6da8);}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+<div class="topbar">
+
+    <a class="brand-home" href="../home-files/Untitled-1.html">SOMA NOVELTY</a>
+
+    <a
+        class="home-button"
+        href="../home-files/Untitled-1.html"
+    >
+        ← トップページへ戻る
+    </a>
+
+</div>
+
+
+<h1>
+    オリジナルプリントシミュレーター
+</h1>
+
+
+
+<!-- =========================
+     デザイン
+========================= -->
+
+<div
+    id="designSection"
+    class="simulator"
+>
+
+    <!-- =========================
+         左側
+    ========================== -->
+
+    <div class="controls">
+
+        <h2>
+            デザイン設定
+        </h2>
+
+
+        <!-- 商品 -->
+
+        <div class="control-group">
+
+            <label for="productSelect">
+                商品
+            </label>
+
+            <select id="productSelect">
+
+                <option value="tote">
+                    トートバッグ
+                </option>
+
+                <option value="tshirt">
+                    Tシャツ
+                </option>
+
+                <option value="pouch">
+                    ポーチ
+                </option>
+
+                <option value="bottle">
+                    ボトル
+                </option>
+
+                <option value="frame">
+                    フォトフレーム
+                </option>
+
+                <option value="stand">
+                    木製スマホスタンド
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- 複数画像 -->
+
+        <div class="control-group">
+
+            <label for="logoUpload">
+                画像を追加
+            </label>
+
+            <input
+                type="file"
+                id="logoUpload"
+                accept="image/*"
+                multiple
+            >
+
+        </div>
+
+
+        <!-- サイズ -->
+
+        <div class="control-group">
+
+            <label for="logoSize">
+                選択中の画像の大きさ
+            </label>
+
+            <input
+                type="range"
+                id="logoSize"
+                min="30"
+                max="300"
+                value="120"
+            >
+
+            <div class="size-value">
+
+                <span id="sizeValue">
+                    120
+                </span>
+
+                px
+
+            </div>
+
+        </div>
+
+
+        <!-- 回転 -->
+
+        <div class="control-group">
+
+            <label for="logoRotate">
+                選択中の画像の回転
+            </label>
+
+            <input
+                type="range"
+                id="logoRotate"
+                min="-180"
+                max="180"
+                value="0"
+            >
+
+            <div class="rotate-value">
+
+                <span id="rotateValue">
+                    0
+                </span>
+
+                °
+
+            </div>
+
+        </div>
+
+
+        <!-- リセット -->
+
+        <button
+            type="button"
+            class="reset-button"
+            id="resetButton"
+        >
+            選択中の画像をリセット
+        </button>
+
+
+        <!-- 削除 -->
+
+        <button
+            type="button"
+            class="delete-button"
+            id="deleteButton"
+        >
+            選択中の画像を削除
+        </button>
+
+
+        <!-- 選択状態 -->
+
+        <div
+            id="selectedInfo"
+            class="selected-info"
+        >
+            画像を追加してください
+        </div>
+
+
+        <!-- 使い方 -->
+
+        <div class="help">
+
+            <strong>
+                使い方
+            </strong>
+
+            <br>
+
+            ① 商品を選択
+
+            <br>
+
+            ② 「画像を追加」から画像を選択
+
+            <br>
+
+            ③ 画像をドラッグして配置
+
+            <br>
+
+            ④ 画像をクリックして選択
+
+            <br>
+
+            ⑤ サイズを調整
+
+            <br>
+
+            ⑥ 回転させる
+
+            <br>
+
+            ⑦ 必要なら画像を追加
+
+            <br>
+
+            ⑧ 「このデザインで購入する」
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         プレビュー
+    ========================== -->
+
+    <div class="preview">
+
+        <div
+            class="product-stage"
+            id="productStage"
+        >
+
+            <img
+                id="productImage"
+                class="product-image"
+                src="tote.png"
+                alt="商品画像"
+            >
+
+
+            <!-- 通常印刷範囲 -->
+
+            <div
+                id="printZone"
+                class="print-zone zone-tote"
+            >
+
+                <span class="print-label">
+                    印刷可能範囲
+                </span>
+
+            </div>
+
+
+            <!-- フレーム -->
+
+            <div
+                id="frameZone"
+                class="print-zone zone-frame"
+                style="display:none"
+            >
+
+                <div
+                    class="frame-part frame-top"
+                ></div>
+
+                <div
+                    class="frame-part frame-bottom"
+                ></div>
+
+                <div
+                    class="frame-part frame-left"
+                ></div>
+
+                <div
+                    class="frame-part frame-right"
+                ></div>
+
+                <span class="frame-note">
+                    印刷可能範囲
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="button"
+            class="purchase-button"
+            id="purchaseButton"
+        >
+            このデザインで購入する
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     購入確認
+========================= -->
+
+<div
+    id="purchaseSection"
+    class="purchase-area hidden"
+>
+
+    <h2>
+        購入内容の確認
+    </h2>
+
+
+    <div
+        class="order-summary"
+        id="orderSummary"
+    ></div>
+
+
+    <h3>
+        お客様情報
+    </h3>
+
+
+    <div class="form-grid">
+
+
+        <div>
+
+            <label for="customerName">
+                お名前 *
+            </label>
+
+            <input
+                type="text"
+                id="customerName"
+                placeholder="例：藤野 健太"
+            >
+
+        </div>
+
+
+        <div>
+
+            <label for="customerEmail">
+                メールアドレス *
+            </label>
+
+            <input
+                type="email"
+                id="customerEmail"
+                placeholder="example@email.com"
+            >
+
+        </div>
+
+
+        <div>
+
+            <label for="customerPhone">
+                電話番号 *
+            </label>
+
+            <input
+                type="tel"
+                id="customerPhone"
+                placeholder="090-0000-0000"
+            >
+
+        </div>
+
+
+        <div>
+
+            <label for="customerAddress">
+                住所 *
+            </label>
+
+            <input
+                type="text"
+                id="customerAddress"
+                placeholder="〒000-0000 広島県〇〇市..."
+            >
+
+        </div>
+
+
+        <div class="full">
+
+            <label for="customerNote">
+                備考
+            </label>
+
+            <textarea
+                id="customerNote"
+                rows="4"
+                placeholder="納期・印刷についてのご希望など"
+            ></textarea>
+
+        </div>
+
+    </div>
+
+
+    <button
+        type="button"
+        class="submit-button"
+        id="submitOrder"
+    >
+        この内容で注文する
+    </button>
+
+
+    <button
+        type="button"
+        class="back-button"
+        id="backToDesign"
+    >
+        ← デザインに戻る
+    </button>
+
+
+    <div class="notice">
+
+        ※「注文する」を押すとメールソフトが起動します。
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     完了
+========================= -->
+
+<div
+    id="completeSection"
+    class="complete hidden"
+>
+
+    <h2>
+        ご注文依頼を受け付けました
+    </h2>
+
+    <p>
+        メールソフトから送信された内容をご確認ください。
+    </p>
+
+    <a
+        class="home-button"
+        href="../home-files/Untitled-1.html"
+    >
+        トップページへ戻る
+    </a>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   商品
+===================================================== */
+
+const products = {
+
+    tote:{
+        name:"トートバッグ",
+        image:"tote.png",
+        zone:"zone-tote"
+    },
+
+    tshirt:{
+        name:"Tシャツ",
+        image:"tshirt.png",
+        zone:"zone-tshirt"
+    },
+
+    pouch:{
+        name:"ポーチ",
+        image:"pouch.png",
+        zone:"zone-pouch"
+    },
+
+    bottle:{
+        name:"ボトル",
+        image:"bottle.png",
+        zone:"zone-bottle"
+    },
+
+    frame:{
+        name:"フォトフレーム",
+        image:"photo-frame.png",
+        zone:"zone-frame"
+    },
+
+    stand:{
+        name:"木製スマホスタンド",
+        image:"smartphone-stand.png",
+        zone:"zone-stand"
+    }
+
+};
+
+
+/* =====================================================
+   URL
+===================================================== */
+
+const urlParams =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const selectedProduct =
+    urlParams.get("product");
+
+
+/* =====================================================
+   HTML
+===================================================== */
+
+const productSelect =
+    document.getElementById(
+        "productSelect"
+    );
+
+const logoUpload =
+    document.getElementById(
+        "logoUpload"
+    );
+
+const logoSize =
+    document.getElementById(
+        "logoSize"
+    );
+
+const sizeValue =
+    document.getElementById(
+        "sizeValue"
+    );
+
+const logoRotate =
+    document.getElementById(
+        "logoRotate"
+    );
+
+const rotateValue =
+    document.getElementById(
+        "rotateValue"
+    );
+
+const productImage =
+    document.getElementById(
+        "productImage"
+    );
+
+const productStage =
+    document.getElementById(
+        "productStage"
+    );
+
+const printZone =
+    document.getElementById(
+        "printZone"
+    );
+
+const frameZone =
+    document.getElementById(
+        "frameZone"
+    );
+
+const resetButton =
+    document.getElementById(
+        "resetButton"
+    );
+
+const deleteButton =
+    document.getElementById(
+        "deleteButton"
+    );
+
+const selectedInfo =
+    document.getElementById(
+        "selectedInfo"
+    );
+
+const designSection =
+    document.getElementById(
+        "designSection"
+    );
+
+const purchaseSection =
+    document.getElementById(
+        "purchaseSection"
+    );
+
+const completeSection =
+    document.getElementById(
+        "completeSection"
+    );
+
+const orderSummary =
+    document.getElementById(
+        "orderSummary"
+    );
+
+
+/* =====================================================
+   複数デザイン管理
+===================================================== */
+
+let designs = [];
+
+let selectedDesign = null;
+
+let designNumber = 0;
+
+let currentProduct = "tote";
+
+
+/* =====================================================
+   商品変更
+===================================================== */
+
+function changeProduct(productName){
+
+    const product =
+        products[productName];
+
+    if(!product){
+        return;
+    }
+
+    currentProduct =
+        productName;
+
+
+    productImage.src =
+        product.image;
+
+
+    if(productName === "frame"){
+
+        printZone.style.display =
+            "none";
+
+        frameZone.style.display =
+            "block";
+
+    }
+
+    else{
+
+        frameZone.style.display =
+            "none";
+
+        printZone.style.display =
+            "block";
+
+        printZone.className =
+            "print-zone " +
+            product.zone;
+
+    }
+
+
+    /*
+       商品変更時は
+       既存画像をすべて中央付近へ
+    */
+
+    designs.forEach(
+        function(design){
+
+            keepDesignInside(
+                design
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   商品選択
+===================================================== */
+
+productSelect.addEventListener(
+    "change",
+    function(){
+
+        changeProduct(
+            this.value
+        );
+
+    }
+);
+
+
+/* =====================================================
+   URLの商品
+===================================================== */
+
+if(
+    selectedProduct &&
+    products[selectedProduct]
+){
+
+    currentProduct =
+        selectedProduct;
+
+    productSelect.value =
+        selectedProduct;
+
+}
+
+
+changeProduct(
+    currentProduct
+);
+
+
+/* =====================================================
+   画像追加
+===================================================== */
+
+logoUpload.addEventListener(
+    "change",
+    function(){
+
+        const files =
+            Array.from(
+                this.files
+            );
+
+
+        if(
+            files.length === 0
+        ){
+
+            return;
+
+        }
+
+
+        files.forEach(
+            function(file){
+
+                if(
+                    !file.type.startsWith(
+                        "image/"
+                    )
+                ){
+
+                    return;
+
+                }
+
+
+                const reader =
+                    new FileReader();
+
+
+                reader.onload =
+                    function(event){
+
+                        addDesign(
+                            event.target.result
+                        );
+
+                    };
+
+
+                reader.readAsDataURL(
+                    file
+                );
+
+            }
+        );
+
+
+        /*
+           同じ画像を再度選択できるようにする
+        */
+
+        this.value = "";
+
+    }
+);
+
+
+/* =====================================================
+   デザイン追加
+===================================================== */
+
+function addDesign(src){
+
+    designNumber++;
+
+
+    const img =
+        document.createElement(
+            "img"
+        );
+
+
+    img.src =
+        src;
+
+
+    img.className =
+        "design-item";
+
+
+    img.dataset.id =
+        designNumber;
+
+
+    img.style.width =
+        "120px";
+
+
+    img.style.display =
+        "block";
+
+
+    img.style.left =
+        "50%";
+
+
+    img.style.top =
+        "50%";
+
+
+    img.style.transform =
+        "translate(-50%, -50%) rotate(0deg)";
+
+
+    productStage.appendChild(
+        img
+    );
+
+
+    const design = {
+
+        id:designNumber,
+
+        element:img,
+
+        size:120,
+
+        rotation:0,
+
+        x:0,
+
+        y:0,
+
+        dragging:false,
+
+        dragOffsetX:0,
+
+        dragOffsetY:0
+
+    };
+
+
+    designs.push(
+        design
+    );
+
+
+    /*
+       少しずつずらして表示
+    */
+
+    const stageRect =
+        productStage.getBoundingClientRect();
+
+
+    design.x =
+        (
+            stageRect.width -
+            120
+        ) / 2 +
+        (
+            designs.length - 1
+        ) * 15;
+
+
+    design.y =
+        (
+            stageRect.height -
+            120
+        ) / 2 +
+        (
+            designs.length - 1
+        ) * 15;
+
+
+    img.style.left =
+        design.x + "px";
+
+
+    img.style.top =
+        design.y + "px";
+
+
+    img.style.transform =
+        "rotate(0deg)";
+
+
+    selectDesign(
+        design
+    );
+
+
+    setupDesignDrag(
+        design
+    );
+
+
+    keepDesignInside(
+        design
+    );
+
+}
+
+
+/* =====================================================
+   デザイン選択
+===================================================== */
+
+function selectDesign(design){
+
+    designs.forEach(
+        function(item){
+
+            item.element.classList.remove(
+                "selected"
+            );
+
+        }
+    );
+
+
+    selectedDesign =
+        design;
+
+
+    if(design){
+
+        design.element.classList.add(
+            "selected"
+        );
+
+
+        logoSize.value =
+            design.size;
+
+
+        sizeValue.textContent =
+            design.size;
+
+
+        logoRotate.value =
+            design.rotation;
+
+
+        rotateValue.textContent =
+            design.rotation;
+
+
+        selectedInfo.textContent =
+            "画像 " +
+            design.id +
+            " を選択中";
+
+    }
+
+    else{
+
+        selectedInfo.textContent =
+            "画像を選択してください";
+
+    }
+
+}
+
+
+/* =====================================================
+   画像クリック
+===================================================== */
+
+function setupDesignDrag(design){
+
+    const img =
+        design.element;
+
+
+    img.addEventListener(
+        "pointerdown",
+        function(event){
+
+            event.preventDefault();
+
+
+            selectDesign(
+                design
+            );
+
+
+            design.dragging =
+                true;
+
+
+            img.classList.add(
+                "dragging"
+            );
+
+
+            img.setPointerCapture(
+                event.pointerId
+            );
+
+
+            const rect =
+                img.getBoundingClientRect();
+
+
+            design.dragOffsetX =
+                event.clientX -
+                rect.left;
+
+
+            design.dragOffsetY =
+                event.clientY -
+                rect.top;
+
+        }
+    );
+
+
+    img.addEventListener(
+        "pointermove",
+        function(event){
+
+            if(
+                !design.dragging
+            ){
+
+                return;
+
+            }
+
+
+            event.preventDefault();
+
+
+            const stageRect =
+                productStage.getBoundingClientRect();
+
+
+            let x =
+                event.clientX -
+                stageRect.left -
+                design.dragOffsetX;
+
+
+            let y =
+                event.clientY -
+                stageRect.top -
+                design.dragOffsetY;
+
+
+            design.x =
+                x;
+
+
+            design.y =
+                y;
+
+
+            img.style.left =
+                x + "px";
+
+
+            img.style.top =
+                y + "px";
+
+
+            keepDesignInside(
+                design
+            );
+
+        }
+    );
+
+
+    img.addEventListener(
+        "pointerup",
+        function(event){
+
+            design.dragging =
+                false;
+
+
+            img.classList.remove(
+                "dragging"
+            );
+
+
+            try{
+
+                img.releasePointerCapture(
+                    event.pointerId
+                );
+
+            }
+
+            catch(error){}
+
+        }
+    );
+
+
+    img.addEventListener(
+        "pointercancel",
+        function(){
+
+            design.dragging =
+                false;
+
+
+            img.classList.remove(
+                "dragging"
+            );
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   サイズ変更
+===================================================== */
+
+logoSize.addEventListener(
+    "input",
+    function(){
+
+        if(
+            !selectedDesign
+        ){
+
+            return;
+
+        }
+
+
+        const size =
+            Number(
+                this.value
+            );
+
+
+        selectedDesign.size =
+            size;
+
+
+        selectedDesign.element.style.width =
+            size + "px";
+
+
+        sizeValue.textContent =
+            size;
+
+
+        keepDesignInside(
+            selectedDesign
+        );
+
+    }
+);
+
+
+/* =====================================================
+   回転
+===================================================== */
+
+logoRotate.addEventListener(
+    "input",
+    function(){
+
+        if(
+            !selectedDesign
+        ){
+
+            return;
+
+        }
+
+
+        const rotation =
+            Number(
+                this.value
+            );
+
+
+        selectedDesign.rotation =
+            rotation;
+
+
+        selectedDesign.element.style.transform =
+            "rotate(" +
+            rotation +
+            "deg)";
+
+
+        rotateValue.textContent =
+            rotation;
+
+
+        keepDesignInside(
+            selectedDesign
+        );
+
+    }
+);
+
+
+/* =====================================================
+   デザインを印刷範囲内に
+===================================================== */
+
+function keepDesignInside(design){
+
+    if(!design){
+        return;
+    }
+
+
+    const img =
+        design.element;
+
+
+    const stageRect =
+        productStage.getBoundingClientRect();
+
+
+    /*
+       フォトフレーム
+    */
+
+    if(
+        currentProduct ===
+        "frame"
+    ){
+
+        keepDesignInsideFrame(
+            design
+        );
+
+        return;
+
+    }
+
+
+    const zone =
+        printZone.getBoundingClientRect();
+
+
+    const imgRect =
+        img.getBoundingClientRect();
+
+
+    let x =
+        parseFloat(
+            img.style.left
+        );
+
+
+    let y =
+        parseFloat(
+            img.style.top
+        );
+
+
+    if(isNaN(x)){
+        x = 0;
+    }
+
+
+    if(isNaN(y)){
+        y = 0;
+    }
+
+
+    const zoneLeft =
+        zone.left -
+        stageRect.left;
+
+
+    const zoneTop =
+        zone.top -
+        stageRect.top;
+
+
+    const zoneRight =
+        zone.right -
+        stageRect.left;
+
+
+    const zoneBottom =
+        zone.bottom -
+        stageRect.top;
+
+
+    const width =
+        imgRect.width;
+
+
+    const height =
+        imgRect.height;
+
+
+    /*
+       回転した画像の外接矩形
+       も考慮
+    */
+
+    const rotatedWidth =
+        imgRect.width;
+
+
+    const rotatedHeight =
+        imgRect.height;
+
+
+    const maxX =
+        zoneRight -
+        rotatedWidth;
+
+
+    const maxY =
+        zoneBottom -
+        rotatedHeight;
+
+
+    x =
+        Math.max(
+            zoneLeft,
+            Math.min(
+                maxX,
+                x
+            )
+        );
+
+
+    y =
+        Math.max(
+            zoneTop,
+            Math.min(
+                maxY,
+                y
+            )
+        );
+
+
+    img.style.left =
+        x + "px";
+
+
+    img.style.top =
+        y + "px";
+
+
+    design.x =
+        x;
+
+
+    design.y =
+        y;
+
+}
+
+
+/* =====================================================
+   フォトフレーム
+===================================================== */
+
+function keepDesignInsideFrame(design){
+
+    const img =
+        design.element;
+
+
+    const frame =
+        frameZone.getBoundingClientRect();
+
+
+    const stage =
+        productStage.getBoundingClientRect();
+
+
+    const imgRect =
+        img.getBoundingClientRect();
+
+
+    let x =
+        parseFloat(
+            img.style.left
+        );
+
+
+    let y =
+        parseFloat(
+            img.style.top
+        );
+
+
+    if(isNaN(x)){
+        x = 0;
+    }
+
+
+    if(isNaN(y)){
+        y = 0;
+    }
+
+
+    const frameLeft =
+        frame.left -
+        stage.left;
+
+
+    const frameTop =
+        frame.top -
+        stage.top;
+
+
+    const frameRight =
+        frame.right -
+        stage.left;
+
+
+    const frameBottom =
+        frame.bottom -
+        stage.top;
+
+
+    const width =
+        imgRect.width;
+
+
+    const height =
+        imgRect.height;
+
+
+    x =
+        Math.max(
+            frameLeft,
+            Math.min(
+                frameRight -
+                width,
+                x
+            )
+        );
+
+
+    y =
+        Math.max(
+            frameTop,
+            Math.min(
+                frameBottom -
+                height,
+                y
+            )
+        );
+
+
+    img.style.left =
+        x + "px";
+
+
+    img.style.top =
+        y + "px";
+
+
+    design.x =
+        x;
+
+
+    design.y =
+        y;
+
+}
+
+
+/* =====================================================
+   リセット
+===================================================== */
+
+resetButton.addEventListener(
+    "click",
+    function(){
+
+        if(
+            !selectedDesign
+        ){
+
+            alert(
+                "リセットする画像を選択してください。"
+            );
+
+            return;
+
+        }
+
+
+        selectedDesign.size =
+            120;
+
+
+        selectedDesign.rotation =
+            0;
+
+
+        selectedDesign.element.style.width =
+            "120px";
+
+
+        selectedDesign.element.style.transform =
+            "rotate(0deg)";
+
+
+        logoSize.value =
+            120;
+
+
+        sizeValue.textContent =
+            "120";
+
+
+        logoRotate.value =
+            0;
+
+
+        rotateValue.textContent =
+            "0";
+
+
+        const stageRect =
+            productStage.getBoundingClientRect();
+
+
+        selectedDesign.x =
+            (
+                stageRect.width -
+                120
+            ) / 2;
+
+
+        selectedDesign.y =
+            (
+                stageRect.height -
+                120
+            ) / 2;
+
+
+        selectedDesign.element.style.left =
+            selectedDesign.x +
+            "px";
+
+
+        selectedDesign.element.style.top =
+            selectedDesign.y +
+            "px";
+
+
+        keepDesignInside(
+            selectedDesign
+        );
+
+    }
+);
+
+
+/* =====================================================
+   選択中画像を削除
+===================================================== */
+
+deleteButton.addEventListener(
+    "click",
+    function(){
+
+        if(
+            !selectedDesign
+        ){
+
+            alert(
+                "削除する画像を選択してください。"
+            );
+
+            return;
+
+        }
+
+
+        const index =
+            designs.indexOf(
+                selectedDesign
+            );
+
+
+        if(index !== -1){
+
+            designs.splice(
+                index,
+                1
+            );
+
+        }
+
+
+        selectedDesign.element.remove();
+
+
+        selectedDesign =
+            null;
+
+
+        selectedInfo.textContent =
+            designs.length > 0
+            ? "画像を選択してください"
+            : "画像を追加してください";
+
+
+        if(
+            designs.length > 0
+        ){
+
+            selectDesign(
+                designs[
+                    designs.length - 1
+                ]
+            );
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   リサイズ時
+===================================================== */
+
+window.addEventListener(
+    "resize",
+    function(){
+
+        designs.forEach(
+            function(design){
+
+                keepDesignInside(
+                    design
+                );
+
+            }
+        );
+
+    }
+);
+
+
+/* =====================================================
+   注文確認
+===================================================== */
+
+document
+    .getElementById(
+        "purchaseButton"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            if(
+                designs.length === 0
+            ){
+
+                alert(
+                    "先に画像を1つ以上追加してください。"
+                );
+
+                return;
+
+            }
+
+
+            const product =
+                products[currentProduct];
+
+
+            let designText = "";
+
+
+            designs.forEach(
+                function(design){
+
+                    designText +=
+                        "画像 " +
+                        design.id +
+                        "：" +
+                        design.size +
+                        "px / " +
+                        design.rotation +
+                        "°<br>";
+
+                }
+            );
+
+
+            orderSummary.innerHTML =
+
+                "<strong>商品：</strong>" +
+                product.name +
+
+                "<br>" +
+
+                "<strong>画像数：</strong>" +
+                designs.length +
+                "個" +
+
+                "<br><br>" +
+
+                "<strong>デザイン：</strong><br>" +
+
+                designText;
+
+
+            designSection
+                .classList
+                .add(
+                    "hidden"
+                );
+
+
+            purchaseSection
+                .classList
+                .remove(
+                    "hidden"
+                );
+
+
+            window.scrollTo({
+
+                top:0,
+
+                behavior:"smooth"
+
+            });
+
+        }
+    );
+
+
+/* =====================================================
+   デザインに戻る
+===================================================== */
+
+document
+    .getElementById(
+        "backToDesign"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            purchaseSection
+                .classList
+                .add(
+                    "hidden"
+                );
+
+
+            designSection
+                .classList
+                .remove(
+                    "hidden"
+                );
+
+
+            window.scrollTo({
+
+                top:0,
+
+                behavior:"smooth"
+
+            });
+
+        }
+    );
+
+
+/* =====================================================
+   注文送信
+===================================================== */
+
+document
+    .getElementById(
+        "submitOrder"
+    )
+    .addEventListener(
+        "click",
+        function(){
+
+            const name =
+                document
+                    .getElementById(
+                        "customerName"
+                    )
+                    .value
+                    .trim();
+
+
+            const email =
+                document
+                    .getElementById(
+                        "customerEmail"
+                    )
+                    .value
+                    .trim();
+
+
+            const phone =
+                document
+                    .getElementById(
+                        "customerPhone"
+                    )
+                    .value
+                    .trim();
+
+
+            const address =
+                document
+                    .getElementById(
+                        "customerAddress"
+                    )
+                    .value
+                    .trim();
+
+
+            const note =
+                document
+                    .getElementById(
+                        "customerNote"
+                    )
+                    .value
+                    .trim();
+
+
+            if(
+                !name ||
+                !email ||
+                !phone ||
+                !address
+            ){
+
+                alert(
+                    "お名前・メールアドレス・電話番号・住所を入力してください。"
+                );
+
+                return;
+
+            }
+
+
+            const product =
+                products[currentProduct];
+
+
+            let designText = "";
+
+
+            designs.forEach(
+                function(design){
+
+                    designText +=
+`画像${design.id}
+サイズ：${design.size}px
+回転：${design.rotation}°
+
+`;
+
+                }
+            );
+
+
+            const subject =
+                "SOMA NOVELTY オリジナルプリント注文依頼";
+
+
+            const body =
+`【注文内容】
+
+商品：${product.name}
+
+画像数：${designs.length}個
+
+【デザイン】
+
+${designText}
+
+【お客様情報】
+
+お名前：${name}
+
+メールアドレス：${email}
+
+電話番号：${phone}
+
+住所：${address}
+
+【備考】
+
+${note || "なし"}
+
+※デザインシミュレーターからの注文依頼です。
+`;
+
+
+            window.location.href =
+                "mailto:somatide.insatsu@gmail.com" +
+                "?subject=" +
+                encodeURIComponent(
+                    subject
+                ) +
+                "&body=" +
+                encodeURIComponent(
+                    body
+                );
+
+
+            setTimeout(
+                function(){
+
+                    purchaseSection
+                        .classList
+                        .add(
+                            "hidden"
+                        );
+
+
+                    completeSection
+                        .classList
+                        .remove(
+                            "hidden"
+                        );
+
+
+                    window.scrollTo({
+
+                        top:0,
+
+                        behavior:"smooth"
+
+                    });
+
+                },
+                800
+            );
+
+        }
+    );
+
+</script>
+
+</body>
+</html>
